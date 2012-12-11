@@ -3,7 +3,7 @@
 """
 Reindents each input file. If none is given,
 code is read from stdin and written to stdout.
-in this mode, all options except -i are ignored.
+In this mode, all options except -i are ignored.
 """
 
 #TODO: don’t change multiline strings that aren’t docstrings
