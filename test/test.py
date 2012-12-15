@@ -1,12 +1,13 @@
 #!/usr/bin/env python3
 
 from unittest import TestCase, main
-from reindent import Reindenter, parser
+from reindent import Reindenter, reindent, parser
 
 class TestCmdLineRun(TestCase):
+	maxDiff = None
 	def testReindenter(self):
 		with open('test_before.py') as before, open('test_after.py') as after:
-			indenter = Reindenter(before)
+			indenter = Reindenter(before, '\t')
 			expected = after.readlines()
 		
 		self.assertTrue(indenter())
@@ -26,5 +27,22 @@ class TestParser(TestCase):
 		opts = parser.parse_args(['-i', '\t'])
 		self.assertEqual(opts.indentation, '\t')
 
+def _simpleTest(before, after):
+	def method(self):
+		self.assertEqual(reindent(before), after)
+	return method
+
+class TestConversions(TestCase):
+	def testReindent(self):
+		self.assertEqual(reindent(''), '')
+	
+	def testHangingComment(self):
+		hangingComment = '''
+def bla(): #a
+           #b
+'''
+		self.assertEqual(reindent(hangingComment + ' pass'), hangingComment + '    pass')
+
 if __name__ == '__main__':
-	main()
+	print(TestConversions().testReindent())
+	main(verbosity=2)
