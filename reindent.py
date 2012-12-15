@@ -11,6 +11,7 @@ In this mode, all options except -i are ignored.
 __version__ = '1'
 
 import os, sys, logging
+from io import StringIO
 from shutil import copyfile
 from argparse import ArgumentParser
 from collections import defaultdict
@@ -109,8 +110,13 @@ def check(file, options=parser.parse_args([])):
 		logging.info('unchanged.')
 		return False
 
+def reindent(string, indentation='    '):
+	reindenter = Reindenter(StringIO(string), indentation)
+	reindenter()
+	return ''.join(reindenter.after)
+
 class Reindenter:
-	def __init__(self, f, indentation):
+	def __init__(self, f, indentation='    '):
 		self.indentation = indentation
 		self.before = f.readlines()
 		self.lines = [line.rstrip().expandtabs() for line in self.before]
