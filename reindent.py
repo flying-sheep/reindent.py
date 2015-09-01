@@ -102,7 +102,7 @@ def check(file, options=parser.parse_args([])):
 				bak = file + '.bak'
 				copyfile(file, bak)
 				logging.info('backed up %s to %s.', file, bak)
-			with open(file, encoding=encoding) as f:
+			with open(file, 'w', encoding=encoding) as f:
 				indenter.write(f)
 			logging.info('wrote new %s.', file)
 		return True
