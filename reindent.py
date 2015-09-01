@@ -100,6 +100,14 @@ def check(file, options=parser.parse_args([])):
 		else:
 			if options.backup:
 				bak = file + '.bak'
+				# do not overwrite another backup file
+				if os.path.exists(bak):
+					n = 1
+					bak += str(n)
+					while os.path.exists(bak):
+						bak = '{}{}'.format(bak[:-1], n)
+						n += 1
+					
 				copyfile(file, bak)
 				logging.info('backed up %s to %s.', file, bak)
 			with open(file, 'w', encoding=encoding) as f:
