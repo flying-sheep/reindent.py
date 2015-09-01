@@ -151,7 +151,7 @@ class Reindenter:
 				self.after.append(line)
 				
 				sym = '×' if l == lineno - 1 else ' '
-				logging.debug("{}{:3} {:31} |{!r}".format(sym, l, stat, line))
+				logging.debug("{}{:3} {!r:31} |{}".format(sym, l, stat, line))
 			
 			last_stat_on = l+1
 		
