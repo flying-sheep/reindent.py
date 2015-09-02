@@ -100,9 +100,17 @@ def check(file, options=parser.parse_args([])):
 		else:
 			if options.backup:
 				bak = file + '.bak'
+				# do not overwrite another backup file
+				if os.path.exists(bak):
+					n = 1
+					bak += str(n)
+					while os.path.exists(bak):
+						bak = '{}{}'.format(bak[:-1], n)
+						n += 1
+					
 				copyfile(file, bak)
 				logging.info('backed up %s to %s.', file, bak)
-			with open(file, encoding=encoding) as f:
+			with open(file, 'w', encoding=encoding) as f:
 				indenter.write(f)
 			logging.info('wrote new %s.', file)
 		return True
@@ -143,7 +151,7 @@ class Reindenter:
 				self.after.append(line)
 				
 				sym = '×' if l == lineno - 1 else ' '
-				logging.debug("{}{:3} {:31} |{!r}".format(sym, l, stat, line))
+				logging.debug("{}{:3} {!r:31} |{}".format(sym, l, stat, line))
 			
 			last_stat_on = l+1
 		
