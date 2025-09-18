@@ -43,6 +43,31 @@ def bla(): #a
 '''
 		self.assertEqual(reindent(hangingComment + ' pass'), hangingComment + '    pass')
 
+	def testMultiLineString(self):
+		src = '''"""Top multiline string
+second line
+  Third and last line"""
+
+a=1
+
+"""  First line  \t
+   second line
+\t\tthird line  
+  """\
+'''
+		expected = '''"""Top multiline string
+second line
+  Third and last line"""
+
+a=1
+
+"""  First line
+   second line
+                third line
+  """\
+'''
+		self.assertEqual(reindent(src), expected)
+
 if __name__ == '__main__':
 	print(TestConversions().testReindent())
 	main(verbosity=2)
