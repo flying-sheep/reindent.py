@@ -44,7 +44,8 @@ def bla(): #a
 		self.assertEqual(reindent(hangingComment + ' pass'), hangingComment + '    pass')
 
 	def testMultiLineString(self):
-		src = '''"""Top multiline string
+		src = '''\
+"""Top multiline string
 second line
   Third and last line"""
 
@@ -55,7 +56,8 @@ a=1
 \t\tthird line  
   """\
 '''
-		expected = '''"""Top multiline string
+		expected = '''\
+"""Top multiline string
 second line
   Third and last line"""
 
