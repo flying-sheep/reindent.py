@@ -140,9 +140,9 @@ class Reindenter:
 		
 		last_stat_on = 0
 		
-		for lineno, stat in stats:
+		for lineno, stat, nlines in stats:
 			stat = stat or [] #we could process comments specially here
-			for l in range(last_stat_on, lineno+1):
+			for l in range(last_stat_on, lineno+nlines):
 				line = self.lines[l]
 				line = line[sum(len(s) for s in stat):]
 				line = (len(stat) * self.indentation) + line #TODO
@@ -192,7 +192,7 @@ class Reindenter:
 			
 			elif typ == COMMENT:
 				if find_stmt:
-					yield (lineno, None)
+					yield (lineno, None, line.count('\n'))
 					# but we're still looking for a new stmt, so leave
 					# find_stmt alone
 			
@@ -210,7 +210,7 @@ class Reindenter:
 					full = cumul_indent[i]
 					prefix = cumul_indent[i - 1] if i > 0 else 0
 					indent.insert(0, ' ' * (full - prefix))
-				yield (lineno, indent)
+				yield (lineno, indent, line.count('\n'))
 
 if __name__ == '__main__':
 	main(sys.argv[1:])
